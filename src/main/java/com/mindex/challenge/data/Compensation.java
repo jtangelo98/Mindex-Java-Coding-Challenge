@@ -37,7 +37,7 @@ public class Compensation{
 		return this.compensation;
 	}
 	
-	public void setCompenstation(BigDecimal compensation) {
+	public void setCompensation(BigDecimal compensation) {
 		this.compensation = compensation;
 	}
 	
