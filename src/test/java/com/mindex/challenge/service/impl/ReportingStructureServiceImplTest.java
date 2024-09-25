@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.service.EmployeeService;
@@ -21,6 +23,7 @@ import com.mindex.challenge.data.Employee;
 public class ReportingStructureServiceImplTest{
 	
 	private String reportUrl;
+	private String reportUrlWithInvalidId;
 	
 	ReportingStructure reportingStructure;
 	
@@ -39,12 +42,19 @@ public class ReportingStructureServiceImplTest{
 	@Before
     public void setup() {
         reportUrl = "http://localhost:" + port + "employee/{id}/reports";
+        reportUrlWithInvalidId = "http://localhost:" + port + "employee/123456789/reports";
     }
 		
 	@Test 
 	public void testReportTreeSearchWithTwoDirectReports() {
 		//ARRANGE
 		Employee testEmployee = new Employee() ;
+		testEmployee.setFirstName("Peter");
+		testEmployee.setLastName("Parker");
+		testEmployee.setDepartment("Engineering");
+		testEmployee.setPosition("Developer");
+		testEmployee.setEmployeeId("1");
+		
 		
 		Employee directReportEmployee1 = new Employee();
 		directReportEmployee1.setFirstName("Miles");
@@ -68,12 +78,12 @@ public class ReportingStructureServiceImplTest{
 		}};
 		testEmployee.setDirectReports(directReports);
 		int expectedNumReports = 2;
-		
+			
 		//ACT
 		ReportingStructure report = reportingStructureServiceImpl.reportTreeSearch(testEmployee);
 		
 		//ASSERT
-		assertEquals(testEmployee, report.getEmployee());
+		assertEmployeeEquivalence(testEmployee, report.getEmployee());
 		assertEquals(expectedNumReports,report.getNumberOfReports());
 	}
 	
@@ -81,6 +91,11 @@ public class ReportingStructureServiceImplTest{
 	public void testReportTreeSearchWithNestedDirectReports() {
 		//ARRANGE
 		Employee testEmployee = new Employee() ;
+		testEmployee.setFirstName("Peter");
+		testEmployee.setLastName("Parker");
+		testEmployee.setDepartment("Engineering");
+		testEmployee.setPosition("Developer");
+		testEmployee.setEmployeeId("1");
 		
 		Employee directReportEmployee1 = new Employee();
 		directReportEmployee1.setFirstName("Miles");
@@ -131,7 +146,7 @@ public class ReportingStructureServiceImplTest{
 		ReportingStructure report = reportingStructureServiceImpl.reportTreeSearch(testEmployee);
 		
 		//ASSERT
-		assertEquals(testEmployee, report.getEmployee());
+		assertEmployeeEquivalence(testEmployee, report.getEmployee());
 		assertEquals(expectedNumReports,report.getNumberOfReports());
 	}
 
@@ -139,6 +154,11 @@ public class ReportingStructureServiceImplTest{
 	public void testReportTreeSearchWithNoDirectReports() {
 		//ARRANGE
 		Employee testEmployee = new Employee() ;
+		testEmployee.setFirstName("Peter");
+		testEmployee.setLastName("Parker");
+		testEmployee.setDepartment("Engineering");
+		testEmployee.setPosition("Developer");
+		testEmployee.setEmployeeId("1");
 
 		int expectedNumReports = 0;
 		
@@ -146,7 +166,7 @@ public class ReportingStructureServiceImplTest{
 		ReportingStructure report = reportingStructureServiceImpl.reportTreeSearch(testEmployee);
 		
 		//ASSERT
-		assertEquals(testEmployee, report.getEmployee());
+		assertEmployeeEquivalence(testEmployee, report.getEmployee());
 		assertEquals(expectedNumReports,report.getNumberOfReports());
 	}
 	
@@ -167,5 +187,23 @@ public class ReportingStructureServiceImplTest{
 		assertEquals(expectedNumReports, readReport.getNumberOfReports());
 	
 	}
+	
+	@Test
+	public void testReportStructureServiceFromEndpointInvalidId() {
+		//ARRANGE
+		
+		//ACT
+		ResponseEntity<ReportingStructure> readReport = restTemplate.getForEntity(reportUrlWithInvalidId, ReportingStructure.class);
+		
+		//ASSERT
+		assertEquals(HttpStatus.NOT_FOUND, readReport.getStatusCode());
+	}
+	
+    private static void assertEmployeeEquivalence(Employee expected, Employee actual) {
+        assertEquals(expected.getFirstName(), actual.getFirstName());
+        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getDepartment(), actual.getDepartment());
+        assertEquals(expected.getPosition(), actual.getPosition());
+    }
 	
 }

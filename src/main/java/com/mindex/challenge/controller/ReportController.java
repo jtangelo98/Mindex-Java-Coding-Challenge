@@ -8,7 +8,9 @@ import com.mindex.challenge.service.ReportingStructureService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class ReportController {
@@ -19,7 +21,7 @@ public class ReportController {
    @Autowired
     private ReportingStructureService reportingStructureService;
     
-   //REST endpoint for performing an HTTP request of an employees reporting structure
+   //REST endpoint for performing an HTTP GET request of an employees reporting structure
     @GetMapping("/employee/{id}/reports")
     public ReportingStructure read(@PathVariable String id) {
         LOG.debug("Received employee create request for id [{}]", id);
@@ -28,9 +30,9 @@ public class ReportController {
         Employee temp = employeeService.read(id);
         
         //check for valid employee id
-        if(temp == null) {
-        	throw new RuntimeException("Employee with id: " + id + "was not found");
-        }
+		if(temp == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee with id " + id + " not found.");
+		}
         //return reporting structure of employee
         return reportingStructureService.reportTreeSearch(temp);
 

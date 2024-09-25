@@ -12,16 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.mindex.challenge.service.EmployeeService;
 import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.data.Employee;
+import com.mindex.challenge.data.ReportingStructure;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CompensationServiceImplTest{
 	
 	private String compensationUrl;
+	private String compensationUrlWithInvalidId;
 	
 	Compensation compensation;
 	
@@ -40,6 +44,7 @@ public class CompensationServiceImplTest{
 	@Before
     public void setup() {
         compensationUrl = "http://localhost:" + port + "employee/{id}/compensation";
+        compensationUrlWithInvalidId = "http://localhost:" + port + "employee/123456789/compensation";
     }
 		
 	@Test 
@@ -82,6 +87,16 @@ public class CompensationServiceImplTest{
 		
 		
 		
+	}
+	
+	@Test
+	public void testCreateReadCompensationInvalidId() {
+		//ARRANGE
+		
+		//ACT
+		ResponseEntity<Compensation> readCompensation = restTemplate.getForEntity(compensationUrlWithInvalidId, Compensation.class);
+		//ASSERT
+		assertEquals(HttpStatus.NOT_FOUND, readCompensation.getStatusCode());
 	}
 
 	

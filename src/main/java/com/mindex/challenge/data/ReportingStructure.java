@@ -1,10 +1,3 @@
-/*
- *	Name		: ReportingStructure
- *  Description	: A Java object to store an instance of an employee and their number of total
- *  			  reporting employees.
- * 	Notes		:
- */
-
 package com.mindex.challenge.data;
 
 public class ReportingStructure{
