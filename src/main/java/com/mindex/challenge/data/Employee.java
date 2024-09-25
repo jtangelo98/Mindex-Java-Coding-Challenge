@@ -14,7 +14,7 @@ public class Employee {
     private String position;
     private String department;
     //DBRef used to allow eager loading of resources for ReportStructure
-    //reduces number of queries on database when building ReportStructure
+    //reduces number of queries on database when building ReportStructure object
     @DBRef
     private List<Employee> directReports;
 

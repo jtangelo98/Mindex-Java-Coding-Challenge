@@ -2,7 +2,6 @@ package com.mindex.challenge.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.Before;
@@ -18,7 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.mindex.challenge.service.EmployeeService;
 import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.data.Employee;
-import com.mindex.challenge.data.ReportingStructure;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

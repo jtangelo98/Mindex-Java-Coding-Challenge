@@ -19,7 +19,7 @@ import com.mindex.challenge.data.ReportingStructure;
 public class ReportingStructureServiceImpl implements ReportingStructureService {	
 	public ReportingStructure reportTreeSearch(Employee employee) {
 		
-		//HashSet used for allReportingEmployees to avoid duplicates for subordinate employees with the same direct reports
+		//HashSet used for allReportingEmployees to avoid possible duplicates for subordinate employees with the same direct reports
 		HashSet <Employee> allReportingEmployees = new HashSet <Employee>();
 		Queue <Employee> queue = new LinkedList<>();
 		ReportingStructure report = new ReportingStructure(employee,0);
@@ -34,6 +34,7 @@ public class ReportingStructureServiceImpl implements ReportingStructureService 
 		//while there are still reports to search
 		while(!queue.isEmpty()) {
 			
+			//add direct reports to working queue
 			allReportingEmployees.add(queue.peek());
 			
 			//if this employee has direct reports
