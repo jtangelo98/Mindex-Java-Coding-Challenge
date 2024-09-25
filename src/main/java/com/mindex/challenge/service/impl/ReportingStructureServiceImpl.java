@@ -1,10 +1,3 @@
-/*
- *	Name		: ReportingStructureServiceImpl 
- *  Description	: A breadth first search algorithm to step through the list of direct reports
- *  			  for an employee (and subsequent direct reports of subordinate employees) and
- *  			  determine the total number of reporting employees. 
- * 	Notes		: List of all reporting employees maintained for testing purposes. 
- */
 package com.mindex.challenge.service.impl;
 
 import java.util.HashSet;
