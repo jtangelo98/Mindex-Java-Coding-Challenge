@@ -81,10 +81,7 @@ public class CompensationServiceImplTest{
 		assertEquals(expectedId, readCompensation.getEmployee().getEmployeeId());
 		assertEquals(expectedCompensation, readCompensation.getCompensation());
 		assertEquals(expectedEffectiveDate, readCompensation.getEffectiveDate());	
-		
-		
-		
-		
+	
 	}
 	
 	@Test
