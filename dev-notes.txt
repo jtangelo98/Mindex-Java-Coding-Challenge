@@ -1,8 +1,0 @@
-Mindex Java Code Challenge
-----------------------------
-
-
-- Gradle version 6.3 only works with older versions of Java. Version 14.0.2 used for development.
-
-- Employee nodes to be searched using depth first search to determine number of reports under employee
-
